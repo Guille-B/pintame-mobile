@@ -4,7 +4,7 @@ Aplicación móvil desarrollada con **React Native**, **Expo (Expo Go / SDK 54)*
 
 ---
 
-## 1. Definición de la Idea, Marca y Requerimientos (Etapa 1 - TPO)
+## 1. Definición de la Idea, Marca y Requerimientos
 
 | Elemento | Descripción |
 | :--- | :--- |
@@ -28,7 +28,7 @@ Aplicación móvil desarrollada con **React Native**, **Expo (Expo Go / SDK 54)*
 
 ---
 
-## 2. Mapa de Navegación y Wireframes Mínimos (Etapa 2 - TPO y Clase 6)
+## 2. Mapa de Navegación y Wireframes Mínimos 
 
 ### Mapa de Navegación (Expo Router)
 ```text
@@ -93,7 +93,7 @@ src/app/
 
 ---
 
-## 3. Arquitectura y Responsabilidad de Cada Carpeta (Clases 8, 10, 13 y 14)
+## 3. Arquitectura y Responsabilidad de Cada Carpeta
 
 Se adoptó una **arquitectura modular por feature con capas livianas** (`Presentación` -> `Aplicación/Dominio en Hooks` -> `Datos/Infraestructura en Services y lib`):
 
@@ -113,24 +113,7 @@ Se adoptó una **arquitectura modular por feature con capas livianas** (`Present
 
 ---
 
-## 4. Respuestas Técnicas y Defensa de Decisiones (Clases 6, 8, 10, 13 y 14)
-
-### 4.1. Comparación razonada: `ImagePicker` vs `CameraView` (Clase 14)
-- **`expo-image-picker` (`launchCameraAsync` / `launchImageLibraryAsync`)**: Delega la captura o selección a la interfaz nativa del sistema operativo. Es la mejor decisión para formularios de carga rápida (por ejemplo, adjuntar la foto de una lata de pintura o elegir una imagen existente de la galería) porque requiere menos código, no necesita administrar manualmente el ciclo de vida del sensor y aprovecha el selector moderno del sistema sin exigir acceso total a la fototeca.
-- **`expo-camera` (`CameraView`)**: Integra la vista previa en vivo dentro de una pantalla propia de la aplicación. Se justifica cuando el producto necesita controles personalizados en pantalla (cambio de lente frontal/trasera, superposición de guía de encuadre) o lectura continua de códigos QR (`onBarcodeScanned`). Exige mayor responsabilidad técnica: verificar `useCameraPermissions()`, habilitar `takePictureAsync` recién después de `onCameraReady`, evitar dobles disparos con estado `busy` y **desmontar `CameraView`** al mostrar la foto o cambiar de pantalla para no dejar el hardware de cámara activo consumiendo batería y memoria.
-
-### 4.2. Diferencia entre URI local (`file://`), caché y archivo en servidor (Clase 14)
-- Una **URI local (`file://...`)** apunta a un archivo temporal generado en el almacenamiento o caché privada del dispositivo; **no es una URL pública de internet** ni un registro persistido en el backend.
-- El archivo procesado con `ImageManipulator.manipulate(uri)` -> `resize({ width: 1024, height: null })` -> `renderAsync()` -> `saveAsync({ compress: 0.75, format: SaveFormat.JPEG })` vive en la **caché temporal** para revisión y comparación de bytes (`new File(uri).size`).
-- Para persistirlo en producción en el backend NestJS de Píntame, no se envía el string `file://` ni una cadena Base64 innecesaria, sino el cuerpo binario mediante `multipart/form-data` hacia un endpoint autenticado con JWT que valide permisos, tipo MIME real, tamaño máximo y política de retención.
-
-### 4.3. Decisiones de Permisos y Privacidad (Clases 13 y 14)
-- **Cámara y Galería**: El permiso de cámara se solicita en contexto y, si es denegado, la interfaz muestra un estado explicativo (`PermissionState`) sin romperse. La cancelación voluntaria del usuario en `ImagePicker` devuelve `null` y conserva el estado previo sin mostrar un error falso.
-- **Ubicación (`expo-location`)**: Se solicita únicamente permiso **foreground** (`requestForegroundPermissionsAsync`) con precisión equilibrada (`Accuracy.Balanced`), mostrando `accuracy` y `timestamp` junto con la comparación frente a `getLastKnownPositionAsync`. No se utiliza tracking en background porque sería sobrediseño e invasivo para la privacidad.
-
----
-
-## 5. Instalación y Ejecución con Expo Go
+## 4. Instalación y Ejecución con Expo Go
 
 1. Descomprimir el archivo ZIP y abrir una terminal en la raíz del proyecto `pintame-mobile`:
    ```bash
@@ -146,6 +129,3 @@ Se adoptó una **arquitectura modular por feature con capas livianas** (`Present
    - **Vendedor**: `vendedor@pintame.com.ar` / Contraseña: `pintame123`
 
 ---
-
-## Autor
-- **Alexis Guillermo Bautista Escobar** — Tecnicatura Superior en Desarrollo de Software Full Stack · Instituto Técnico Superior Cipolletti (2026).
