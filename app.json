@@ -1,0 +1,54 @@
+{
+  "expo": {
+    "name": "Pintame Móvil",
+    "slug": "pintame-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "pintame",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "ar.edu.itscipolletti.pintame"
+    },
+    "android": {
+      "package": "ar.edu.itscipolletti.pintame",
+      "permissions": [
+        "CAMERA",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ]
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-asset",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Permitir el uso de la cámara para escanear códigos QR de productos/tickets y fotografiar muestras o envases de pintura."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Permitir seleccionar imágenes de envases, muestras de color o comprobantes desde la galería.",
+          "cameraPermission": "Permitir tomar fotografías de productos o muestras de pintura."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Usamos tu ubicación solo para verificar la sucursal o registrar el punto de entrega de pedidos en obra."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": false
+    }
+  }
+}
